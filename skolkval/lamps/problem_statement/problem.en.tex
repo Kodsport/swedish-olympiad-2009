@@ -1,0 +1,43 @@
+\problemname{Lamps}
+The use of incandescent light bulbs are soon being banned within the European Union, but it can already be profitable to use low energy lamps.
+Your task is to write a program that, given for how long a light is on each day and the price of electricity, computes after how many days the total cost of ownership (the purchasing price of the lamp plus the cost of electricity) is lower for the low energy lamp compared to the incandescent light bulb for the first time.
+
+We assume the following data:
+\begin{tabular}{|l|l|l|}
+\hline
+& Incandescent bulb & Low energy lamp \\ \hline
+Power (watt)           & 60                & 11             \\ \hline
+Life (hours)           & 1000              & 8000           \\ \hline
+Price (Swedish Kronor) & 5                 & 60             \\ \hline
+\end{tabular}
+
+For simplicity, we assume that each lamp has the exact given life.
+This means that if you only need to have a light on for $1000$ hours you only need a single incandescent bulb, while you need two if you use it for $1001$ hours, since the first breaks after $1000$ hours.
+The cost of electricity $K$ for a lamp that is on for $H$ hours can be computed with the formula
+
+$$ K = \frac{E \cdot H \cdot P}{100\,000} $$
+
+where $E$ is the power of the lamp in Watt and $P$ is the price of electricity (in hundredths of a Krona per kilo-Watt hour).
+
+In every test case, it is guaranteed that low energy lamp becomes cheaper within $8\,000$ hours, i.e. you will never have to buy an additional low energy lamp.
+
+\section*{Input}
+The first line and only line of input contains two integers $h$ ($1 \le h \le 24$) and $P$ ($1 \le P \le 200$) -- the number of hours per day the lamp is on, and the price of eletricity.
+
+\section*{Ouput}
+Output a single integer -- the number of days after which the low energy lamp is cheaper than the incandescent bulb.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups, each worth a number of points.
+To get the points for a test group you need to solve all test cases in the test group. Your final score will be the maximum score of a single submission.
+
+\noindent
+\begin{tabular}{| l | l | l |}
+  \hline
+  Group & Points & Constraints \\ \hline
+  $1$    & $33$        &  You will only have to purchase a single incandescent bulb before the low energy lamp becomes cheaper.. \\ \hline
+  $2$    & $67$        &  No additional constraints \\ \hline
+\end{tabular}
+
+\section*{Explanation of sample 1}
+After $149$ days, the cost of the incadenscent bulb is $71.32840$ Kronor (of which the cost of purchasing two bulbs is $10$), and with the low energy lamp $71.243854$ Kronor (of which the cost of purchasing a single lamp is $60$).
