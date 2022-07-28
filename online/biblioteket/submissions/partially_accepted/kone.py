@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy3
+#!/usr/bin/env python3
 N, K = [int(x) for x in input().split()]
 s = 0
 mx = 0
