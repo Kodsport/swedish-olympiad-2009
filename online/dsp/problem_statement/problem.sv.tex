@@ -1,0 +1,51 @@
+\problemname{Digital Signal Processors}
+
+Anna-Maria tänker bygga ett vindkraftverk, och har uppfunnit en ny sorts processor som hon tänker använda som komponent i vindkraftverkets styrsystem. Processorn är en s.k. DSP, Digital Signal Processor, som bearbetar digitala signaler. I praktiken innebär detta att DSP:n matas med en serie heltal som indata, bearbetar dessa enligt den mjukvara som är inprogrammerad, och producerar en serie heltal som utdata.
+
+Anna-Maria har skickat en beställning till en fabrik som ska producera DSP:n åt henne, men på grund av den ekonomiska krisen drar produktionen ut på tiden. Anna-Maria, som redan har skrivit massor av program till sin DSP, blir lite otålig och vill försäkra sig om att hennes program verkligen kommer fungera på en gång när DSP:erna är klara. Hon ber dig därför skriva ett program som simulerar DSP:ns beteende, så hon kan testa sina program innan DSP:n finns tillgänglig.
+
+Mjukvaran som definierar DSP:ns beteende består av en sekvens av $N$ (upp till 256) maskininstruktioner (även kallade assemblerinstruktioner), numrerade från $0$ till $N-1$. Det finns 7 sorters instruktioner: \texttt{CONST}, \texttt{ADD}, \texttt{SUB}, \texttt{JNZ}, \texttt{INPUT}, \texttt{OUTPUT} och \texttt{HALT}. Varje instruktion har 0-2 parametrar, som var och en är ett heltal $0..255$. DSP:n har också ett arbetsminne som består av 256 st register, vart och ett av dessa innehåller en byte (dvs, ett heltal $0..255$).
+
+Ett program körs genom att DSP:n börjar exekvera instruktion 0, sedan instruktion 1, o.s.v., tills en \texttt{HALT}-instruktion exekveras, då avslutas programmets körning. När körningen börjar har alla register värdet 0. 
+
+Maskininstruktionerna definieras på följande vis: 
+
+\begin{description}
+\item[\texttt{CONST x y}] Sätt register nr y till värdet x. ([y] = x)
+\item[\texttt{ADD x y}] Addera värdet i register nr x till register nr y. ([y] = [y] + [x])
+\item[\texttt{SUB x y}] Subtrahera värdet i register nr x från värdet i register nr y. ([y] = [y] - [x])
+\item[\texttt{JNZ x y}] Jump if Not Zero: Om register nr x inte är 0, "hoppa" till instruktion nr y, dvs låt instruktion y bli nästa instruktion att exekvera. Om register nr x däremot är 0, fortsätt exekveringen som vanligt med instruktionen efter JNZ.
+\item[\texttt{INPUT x}] Läs in nästa byte från DSP:ns indata, lagra den i register nr x.
+\item[\texttt{OUTPUT x}] Skicka innehållet i register nr x som utdata från DSP:n.
+\item[\texttt{HALT}] Avsluta körningen.
+\end{description}
+
+\section*{Indata}
+Indata består av programmet som ska köras på DSP:n, följt av det indata som DSP:n kommer matas med.
+
+På första raden står ett heltal $N$, $0<N<256$, antalet maskininstruktioner i programmet. Därpå följer $N$ rader med instruktioner. Varje instruktion består av instruktionens namn, följt av instruktionens parametrar. Varje parameter beskrivs av ett heltal i intervallet $0..255$. Efter de $N$ raderna med maskininstruktioner, följer ett antal tal i intervallet $0..255$, ett tal på varje rad. Talen utgör indata till DSP:n, dvs den talserie som DSP-programmets \texttt{INPUT}-instruktioner läser från.
+
+Du kan förutsätta att DSP-programmet och dess indata uppfyller följande:
+\begin{itemize}
+\item Ingen \texttt{ADD}-instruktion kommer ge en summa större än 255, och ingen \texttt{SUB}-instruktion kommer ge ett tal mindre än 0 som resultat.
+\item Programmet kommer alltid att avslutas korrekt genom att komma fram till en \texttt{HALT}-instruktion. Dvs, programmet kommer inte fastna i en evig loop.
+\item Antalet instruktioner som behöver exekveras kommer inte att överstiga en miljon.
+\item Det kommer alltid finnas tillräckligt med indata för att räcka till alla \texttt{INPUT}-instruktioner som behöver exekveras.
+\item Programmet kommer aldrig försöka exekvera andra instruktioner än nr $0..N-1$. Dvs, \texttt{JNZ} kommer aldrig att hoppa till en instruktion $\ge N$, och instruktion nr $N-1$ kommer alltid antingen vara en \texttt{HALT}-instruktion, eller en \texttt{JNZ}-instruktion som hoppar till en tidigare instruktion. 
+\end{itemize}
+
+\section*{Utdata}
+Ditt program ska simulera DSP:ns körning av det program som ges av uppgiftens indata, och skriva ut DSP:ns utdata: För varje exekvering av en \texttt{OUTPUT}-instruktion, ska ditt program skriva ut en rad med ett heltal i intervallet $0..255$, utdatat som skickas från \texttt{OUTPUT}-instruktionen. 
+
+\section*{Poängsättning}
+Din lösning kommer att testas på en mängd testfallsgrupper.
+För att få poäng för en grupp så måste du klara alla testfall i gruppen.
+
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Grupp} & \textbf{Poäng} & \textbf{Gränser} \\ \hline
+  $1$    & $40$       & Instruktionen \texttt{JNZ} förekommer inte i testdatan. \\ \hline
+  $2$    & $60$       & Inga ytterligare begränsningar. \\ \hline
+\end{tabular}
