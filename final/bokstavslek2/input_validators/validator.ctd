@@ -1,0 +1,12 @@
+INT(1, 40000, n)
+NEWLINE
+
+SET(last = "")
+REP(n)
+	REGEX("[A-Z]{1,20}", next)
+	NEWLINE
+	ASSERT(last < next)
+	SET(last = next)
+END
+
+EOF

@@ -1,0 +1,20 @@
+\problemname{Bokstavslek}
+Två personer, låt oss kalla dem Anna och Bosse, turas om att säga en bokstav (Anna säger första bokstaven, Bosse andra, Anna tredje o.s.v.). Samma bokstav kan användas flera gånger. Det finns två regler:
+
+\begin{itemize}
+	\item De bokstäver som hittills är sagda (i ordning) får inte bilda ett avslutat ord.
+	\item De bokstäver som hittills är sagda (i ordning) måste kunna bilda ett ord om fler bokstäver får läggas till på slutet.
+\end{itemize}
+
+Den som bryter mot någon av reglerna förlorar och den andre vinner sålunda (i den verkliga leken kan man bluffa på den andra regeln).
+
+Exempelvis, om bokstäverna \texttt{S}, \texttt{T} och \texttt{U} är sagda, så förlorar Bosse om han säger \texttt{P} eftersom \texttt{STUP} är ett ord. Vidare förlorar han om han säger t.ex. \texttt{J} eftersom inget ord börjar på \texttt{STUJ}. Däremot går leken vidare om han säger \texttt{G}, Anna får då inte säga \texttt{A} eftersom \texttt{STUGA} är ett ord, däremot kan hon säga \texttt{B} och därmed tvinga Bosse att avsluta ordet \texttt{STUGBY}.
+
+För enkelhets skull antar vi här att endast bokstäverna \texttt{A-Z} får användas. Vidare finns en ordlista som innehåller alla bokstavskombinationer som ska betraktas som ord i just denna lek. Skriv ett program som bestämmer vilka bokstäver som är ''säkra`` att börja med för Anna, d.v.s. de bokstäver som gör att hon kan vinna omgången oavsett vilka bokstäver som Bosse väljer.
+
+\section*{Input}
+På första raden står ett heltal $N$ ($1 \leq N \leq 40000$), antal ord i ordlistan. Därefter följer $N$ rader med ett ord på varje rad. Orden står i alfabetisk ordning. Varje ord består av högst $20$ bokstäver, valda bland versalerna \texttt{A-Z}. Även påhittade ord kan förekomma.
+
+\section*{Output}
+Programmet ska skriva ut en alfabetiskt ordnad lista över de bokstäver som har egenskapen att, om Anna börjar med bokstaven kommer hon kunna vinna oavsett vilka bokstäver Bosse väljer (båda får förstås anpassa sina val efter vad den andre säger). Bokstäverna ska vara separerade med mellanslag och stå på en enda rad.
+
