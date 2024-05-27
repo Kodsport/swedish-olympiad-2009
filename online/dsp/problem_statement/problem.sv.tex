@@ -14,7 +14,7 @@ Maskininstruktionerna definieras på följande vis:
 \item[\texttt{CONST x y}] Sätt register nr y till värdet x. ([y] = x)
 \item[\texttt{ADD x y}] Addera värdet i register nr x till register nr y. ([y] = [y] + [x])
 \item[\texttt{SUB x y}] Subtrahera värdet i register nr x från värdet i register nr y. ([y] = [y] - [x])
-\item[\texttt{JNZ x y}] Jump if Not Zero: Om register nr x inte är 0, "hoppa" till instruktion nr y, dvs låt instruktion y bli nästa instruktion att exekvera. Om register nr x däremot är 0, fortsätt exekveringen som vanligt med instruktionen efter JNZ.
+\item[\texttt{JNZ x y}] Jump if Not Zero: Om register nr x inte är 0, ``hoppa'' till instruktion nr y, dvs låt instruktion y bli nästa instruktion att exekvera. Om register nr x däremot är 0, fortsätt exekveringen som vanligt med instruktionen efter JNZ.
 \item[\texttt{INPUT x}] Läs in nästa byte från DSP:ns indata, lagra den i register nr x.
 \item[\texttt{OUTPUT x}] Skicka innehållet i register nr x som utdata från DSP:n.
 \item[\texttt{HALT}] Avsluta körningen.
