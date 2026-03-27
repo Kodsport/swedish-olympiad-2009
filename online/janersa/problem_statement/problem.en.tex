@@ -1,0 +1,38 @@
+\problemname{Jan Ersa}
+This is how a poem by Gustaf Fröding begins:\\
+{\em
+Jan Ersa ägde Nackabyn,\\
+Per Persa ägde Backabyn \\
+i By i Västra Ed. \\
+Jan Ersa, \\
+Per Persa, \\
+de höllo aldrig fred.
+}
+
+When Jan Ersa and Per Persa, in their older days, moved into the city, they made sure to end up as far from each other as possible. Write a program that reads information about the streets in the city and then determines between which two houses the shortest path is the longest, and outputs the length of this path.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.4\textwidth]{janersa.png}
+\caption{The map shows all houses and streets in the city in the example. We also see the red houses where Jan Ersa and Per Persa now live. These two houses (numbers 1 and 9) are the houses in the city that are farthest apart (4900 meters).}
+\label{overflow}
+\end{figure}
+
+
+\section*{Input}
+The first line contains an integer $N$ ($2 \le N \le 100$), the number of houses in the city. The houses are numbered from $1$ to $N$. The next line contains an integer $V$, the number of streets, where $2 \le V \le 500$. Then follow $V$ lines with three integers on each line: from house number, to house number, and the street's length (given in hundreds of meters). In the given input, it is always possible to get from any house to any other house.
+
+\section*{Output}
+Output the distance in meters between the two houses farthest apart.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$    & $30$       & $N \leq 25$ \\ \hline
+  $2$    & $70$       & No additional constraints. \\ \hline
+\end{tabular}

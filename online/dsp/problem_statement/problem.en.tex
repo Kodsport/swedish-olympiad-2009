@@ -1,0 +1,51 @@
+\problemname{Digital Signal Processors}
+
+Anna-Maria is planning to build a wind turbine, and has invented a new type of processor that she intends to use as a component in the turbine's control system. The processor is a so-called DSP, Digital Signal Processor, which processes digital signals. In practice, this means the DSP is fed a series of integers as input, processes them according to the programmed software, and produces a series of integers as output.
+
+Anna-Maria has sent an order to a factory that will produce the DSP for her, but due to the economic crisis, production is taking longer than expected. Anna-Maria, who has already written lots of programs for her DSP, is getting a bit impatient and wants to make sure her programs will work right away when the DSPs are ready. She therefore asks you to write a program that simulates the DSP's behavior, so she can test her programs before the DSP is available.
+
+The software that defines the DSP's behavior consists of a sequence of $N$ (up to 256) machine instructions (also called assembly instructions), numbered from $0$ to $N-1$. There are 7 types of instructions: \texttt{CONST}, \texttt{ADD}, \texttt{SUB}, \texttt{JNZ}, \texttt{INPUT}, \texttt{OUTPUT}, and \texttt{HALT}. Each instruction has 0--2 parameters, each of which is an integer $0..255$. The DSP also has a working memory consisting of 256 registers, each containing a byte (i.e., an integer $0..255$).
+
+A program is executed by the DSP starting with instruction 0, then instruction 1, and so on, until a \texttt{HALT} instruction is executed, at which point the program terminates. When execution begins, all registers have the value 0.
+
+The machine instructions are defined as follows:
+
+\begin{description}
+\item[\texttt{CONST x y}] Set register number y to the value x. ([y] = x)
+\item[\texttt{ADD x y}] Add the value in register number x to register number y. ([y] = [y] + [x])
+\item[\texttt{SUB x y}] Subtract the value in register number x from register number y. ([y] = [y] - [x])
+\item[\texttt{JNZ x y}] Jump if Not Zero: If register number x is not 0, ``jump'' to instruction number y, i.e., let instruction y be the next instruction to execute. If register number x is 0, continue execution as usual with the instruction after JNZ.
+\item[\texttt{INPUT x}] Read the next byte from the DSP's input and store it in register number x.
+\item[\texttt{OUTPUT x}] Send the contents of register number x as output from the DSP.
+\item[\texttt{HALT}] Terminate execution.
+\end{description}
+
+\section*{Input}
+The input consists of the program to be run on the DSP, followed by the input data the DSP will be fed.
+
+The first line contains an integer $N$, $0<N<256$, the number of machine instructions in the program. Then follow $N$ lines with instructions. Each instruction consists of the instruction name, followed by the instruction's parameters. Each parameter is described by an integer in the range $0..255$. After the $N$ lines of machine instructions, a number of integers in the range $0..255$ follow, one per line. These constitute the input to the DSP, i.e., the series of numbers that the DSP program's \texttt{INPUT} instructions read from.
+
+You may assume that the DSP program and its input satisfy the following:
+\begin{itemize}
+\item No \texttt{ADD} instruction will produce a sum greater than 255, and no \texttt{SUB} instruction will produce a result less than 0.
+\item The program will always terminate correctly by reaching a \texttt{HALT} instruction. That is, the program will not get stuck in an infinite loop.
+\item The number of instructions that need to be executed will not exceed one million.
+\item There will always be enough input data for all \texttt{INPUT} instructions that need to be executed.
+\item The program will never attempt to execute instructions other than numbers $0..N-1$. That is, \texttt{JNZ} will never jump to an instruction $\ge N$, and instruction number $N-1$ will always be either a \texttt{HALT} instruction or a \texttt{JNZ} instruction that jumps to an earlier instruction.
+\end{itemize}
+
+\section*{Output}
+Your program should simulate the DSP's execution of the program given in the input, and output the DSP's output: For each execution of an \texttt{OUTPUT} instruction, your program should output a line with an integer in the range $0..255$, the output sent from the \texttt{OUTPUT} instruction.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$    & $40$       & The \texttt{JNZ} instruction does not appear in the test data. \\ \hline
+  $2$    & $60$       & No additional constraints. \\ \hline
+\end{tabular}

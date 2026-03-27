@@ -1,0 +1,28 @@
+\problemname{The Library}
+You work at a library and want to return a number of books to the shelves.
+The shelves are placed along the $x$-axis.
+Given which shelf each book belongs on (an $x$-coordinate between $-1\,000$ and $1\,000$) and the maximum number of books you can carry at the same time, determine the shortest distance you must walk to return all books.
+The books to be returned are initially at position $0$.
+You do not need to return to position $0$ after returning the last book.
+
+\section*{Input}
+The first line contains two integers: the number of books to return $N$, where $1 \le N \le 100$, and the number of books you can carry at once $K$, where $1 \le K \le 100$. Then follow $N$ lines with one integer on each line, the $x$-coordinate of the shelf where each book belongs.
+
+\section*{Output}
+The program should output a single line with one integer: the minimum distance you must walk to return all books.
+
+\section*{Explanation of Sample 1}
+You can, for example, start by bringing the books that go to shelves 3 and 4. Then you pick up the book going to shelf 1, and finally you take the book going to shelf $-4$.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$    & $30$        & $K = 1$ \\ \hline
+  $2$    & $70$        & No additional constraints. \\ \hline
+\end{tabular}
