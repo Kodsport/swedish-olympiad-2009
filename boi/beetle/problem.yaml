@@ -4,3 +4,8 @@ source: Baltic Olympiad in Informatics 2009
 license: cc by-sa
 rights_owner: Baltic Olympiad in Informatics
 
+grading:
+  show_test_data_groups: true
+
+limits:
+  time_multiplier: 2

@@ -1,115 +1,40 @@
 #include <bits/stdc++.h>
-//#include <bits/extc++.h>
-
 using namespace std;
 
-#define enablell 0
+using ll = long long;
+using vi = vector<ll>;
+using vvi = vector<vi>;
+using p2 = pair<ll,ll>;
+const ll inf = 1e18;
 
-#define ll long long
-#if enablell
-#define int ll
-#define inf LLONG_MAX
-#define float double
-#else
-#define inf int(2e9)
-#endif
-#define vi vector<int>
-#define vvi vector<vi>
-#define vvvi vector<vvi>
-#define vvvvi vector<vvvi>
-#define vb vector<bool>
-#define vvb vector<vb>
-#define vvvb vector<vvb>
-#define p2 pair<int, int>
-#define vp2 vector<p2>
-#define vvp2 vector<vp2>
-#define vvvp2 vector<vvp2>
-#define p3 tuple<int,int,int>
-#define vp3 vector<p3>
-#define vvp3 vector<vp3>
-#define vvvp3 vector<vvp3>
-#define p4 tuple<int,int,int,int>
-#define vp4 vector<p4>
+#define repe(i, arr) for (auto& i : arr)
+#define rep(i, b) for(ll i = 0; i < (b); ++i)
+#define repp(i, a, b) for(ll i = a; i < (b); ++i)
+#define all(x) begin(x),end(x)
+#define sz(x) ((ll)x.size())
 
-#define read(a) cin >> a
-#define read2(a,b) cin >> a >> b
-#define read3(a,b,c) cin >> a >> b >> c
-#define write(a) cout << (a) << "\n"
-#define quit cout << endl; _Exit(0);
-#define dread(type, a) type a; cin >> a
-#define dread2(type, a, b) dread(type, a); dread(type, b)
-#define dread3(type, a, b, c) dread2(type, a, b); dread(type, c)
-#define dread4(type, a, b, c, d) dread3(type, a, b, c); dread(type, d)
-#define dread5(type, a, b, c, d, e) dread4(type, a, b, c, d); dread(type, e)
-#ifdef _DEBUG
-#define noop cout << "";
-#define deb __debugbreak();
-#define debassert(expr) if (!(expr)) deb;
-#define debif(expr) if(expr) deb;
-#else
-#define noop ;
-#define deb ;
-#define debassert(expr) ;
-#define debif(expr) ;
-#endif
+ll n, m;
 
-#define rep(i, high) for (int i = 0; i < high; i++)
-#define repp(i, low, high) for (int i = low; i < high; i++)
-#define repe(i, container) for (auto& i : container)
-#define per(i, high) for (int i = high-1; i >= 0; i--)
-#define perr(i, low, high) for (int i = high-1; i >= low; i--)
-
-#define readvector(type, name, size) vector<type> name(size); rep(i,size) {dread(type,temp); name[i]=temp;}
-#define all(a) begin(a),end(a)
-#define setcontains(set, x) (set.find(x) != set.end())
-#define stringcontains(str, x) (str.find(x) != string::npos)
-#define within(a, b, c, d) (a >= 0 && a < b && c >= 0 && c < d)
-#define sz(container) ((int)container.size())
-#define mp(a,b) (make_pair(a,b))
-#define first(a) (*begin(a))
-#define indexpair(p, i) ((i==0)?p.first:p.second)
-#define chmax(a,b) ((a)=max((a),b))
-#define chmin(a,b) ((a)=min((a),b))
-
-#define ceildiv(x,y) ((x + y - 1) / y)
-#define fract(a) (a-floor(a))
-
-auto Start = chrono::high_resolution_clock::now();
-#define elapsedmillis() (chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - Start).count())
-#define rununtil(time) if (elapsedmillis() >= time) break;
-
-inline void fast() { ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); }
-template <typename T, typename U> inline void operator+=(std::pair<T, U>& l, const std::pair<T, U>& r) { l = { l.first + r.first,l.second + r.second }; }
-template <typename T> inline int sgn(T val) { return (T(0) < val) - (val < T(0)); }
-template <typename Out> inline void split(const string& s, char delim, Out result) { istringstream iss(s); string item; while (getline(iss, item, delim)) { *result++ = item; } }
-inline vector<string> split(const string& s, char delim) { vector<string> elems; split(s, delim, back_inserter(elems)); return elems; }
-
-
-
-int n, m;
-
-int best(vvp2& dp, vi& drops, int left, int right, int taken, bool leftSide, int target, int penalty)
+ll best(vector<vector<p2>>& dp, vi& drops, ll left, ll right, ll taken, bool leftSide, ll target, ll penalty)
 {
     if (taken == target) return penalty;
 
-    int& v = leftSide ? dp[left][right].first : dp[left][right].second;
+    ll& v = leftSide ? dp[left][right].first : dp[left][right].second;
     if (v != -1) return v + penalty;
 
-    int ret = inf;
+    ll ret = inf;
 
-    int pos = drops[(leftSide) ? left : right];
-
+    ll pos = drops[(leftSide) ? left : right];
 
     if (left - 1 >= 0)
     {
         ret = min(ret, best(dp, drops, left - 1, right, taken + 1, true, target, penalty + (target - taken) * abs(drops[left - 1] - pos)));
     }
 
-    if (right + 1 < drops.size())
+    if (right + 1 < sz(drops))
     {
         ret = min(ret, best(dp, drops, left, right + 1, taken + 1, false, target, penalty + (target - taken) * abs(drops[right + 1] - pos)));
     }
-
 
     v = ret - penalty;
 
@@ -117,25 +42,21 @@ int best(vvp2& dp, vi& drops, int left, int right, int taken, bool leftSide, int
 }
 
 
-int32_t main()
+int main()
 {
-    fast();
+    cin.tie(0)->sync_with_stdio(0);
 
-#if 0
-    ifstream cin("C:\\Users\\Matis\\source\\repos\\Comp prog\\x64\\Debug\\in.txt");
-#endif
+    cin >> n >> m;
 
-
-    read2(n, m);
-
-    readvector(int, drops, n);
+    vector<ll> drops(n);
+    repe(v, drops) cin >> v;
     sort(all(drops));
 
     auto it = lower_bound(all(drops), 0);
 
 
     bool free = false;
-    int index;
+    ll index;
     if (it == drops.end())
     {
         drops.emplace_back(0);
@@ -153,19 +74,15 @@ int32_t main()
     }
 
 
-
-    int ans = 0;
-    vvp2 dp(drops.size(), vp2(drops.size(), {-1,-1}));
+    ll ans = 0;
+    vector<vector<p2>> dp(drops.size(), vector<p2>(drops.size(), {-1,-1}));
     repp(i, 1, n + 1)
     {
+        ll penalty = best(dp, drops, index, index, free, false, i, 0);
 
-
-
-        int penalty = best(dp, drops, index, index, free, false, i, 0);
-
-        rep(j, drops.size())
+        rep(j, sz(drops))
         {
-            rep(k, drops.size())
+            rep(k, sz(drops))
             {
                 dp[j][k].first = -1;
                 dp[j][k].second = -1;
@@ -175,7 +92,8 @@ int32_t main()
         ans = max(ans, i * m - penalty);
     }
 
-    cout << ans;
+    cout << ans << '\n';
 
-    quit;
+    return 0;
 }
+
