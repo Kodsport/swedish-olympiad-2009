@@ -31,7 +31,7 @@
 
  Since running verifyproblem can be very time-consuming, its output can
  be provided as a file, as in:
- $ verifyproblem myproblem -l info > tmplog.txt
+ $ verifyproblem myproblem -l debug > tmplog.txt
  $ python3 analyzetestgroups.py --file tmplog.txt
 
  Assumptions:
@@ -75,7 +75,7 @@ def parse_args() -> argparse.Namespace:
         "--file",
         dest="logfile",
         type=open,
-        help="read logfile instead of running verifyproblem -l info",
+        help="read logfile instead of running verifyproblem -l debug",
     )
     argsparser.add_argument(
         "-l",
@@ -84,7 +84,17 @@ def parse_args() -> argparse.Namespace:
         choices=["info", "warning", "error"],
         default="info",
     )
+    argsparser.add_argument(
+        "--no-status",
+        action="store_true",
+    )
     return argsparser.parse_args()
+
+
+STATUS_ENABLED = True
+def print_status_line(s: str):
+    if STATUS_ENABLED:
+        print(s, end="\r")
 
 
 class Grade(Enum):
@@ -216,7 +226,7 @@ class Submission:
 
 
 class VerificationLogParser:
-    """Parse output from verifyproblem <path> -l info.
+    """Parse output from verifyproblem <path> -l debug.
 
     VerificationLogParser.parse() works line by line through given inputstream,
     matches the current line to various regular expressions in the list
@@ -249,18 +259,20 @@ class VerificationLogParser:
             if match:
                 fun(self, match.groupdict())
                 statusline = f"Submission {self.sub}, test case {self.tc_id}"
-                print(" " * 80, end="\r")
-                print(statusline[:80], end="\r")
+                print_status_line(" " * 80)
+                print_status_line(statusline[:80])
 
     def _first_line(self, matchgroup):
         """Loading problem <problemname>"""
+        if hasattr(self.problem, "name"):
+            return
         self.problem.name = matchgroup["problemname"]
         if self.problem.name != self.problem.path.stem:
             sys.exit(
                 f"FATAL: Problem directory does not match log file ({self.problem.name})."
                 "Aborting..."
             )
-        print(" " * 80, end="\r")
+        print_status_line(" " * 80)
         print(f"\033[01mAnalyzing problem: {self.problem.name}\033[0m")
 
     def _start_submission(self, matchgroup):
@@ -275,7 +287,7 @@ class VerificationLogParser:
 
     def _ac_tc_result(self, matchgroup):
         """Test file result ... AC ... <time> ... test case ... <case>"""
-        print(self.problem.name, self.sub, end="\r")
+        print_status_line(f"{self.problem.name} {self.sub}")
         self.tc_times.append(float(matchgroup["time"]))
         self.tc_id = matchgroup["case"]
 
@@ -312,23 +324,23 @@ class VerificationLogParser:
     patterns: Dict[Callable, Pattern] = {
         _first_line: re.compile(r"Loading problem (?P<problemname>\S+)"),
         _testgroup_grade: re.compile(
-            r"""INFO\ :\ Grade\ on\ test\ case\ group\ data/
-        (?P<type>sample|secret/group)
+            r"""Grade\ on\ testcase\ group\ data\.
+        (?P<type>sample|secret\.group)
         ((?P<number>\d+))?
         \s+ is \s+
         (?P<grade>\S+)""",
             re.VERBOSE,
         ),
         _start_submission: re.compile(
-            r"INFO : Check (?P<type>\S+) submission (?P<name>\S+)"
+            r"Check (?P<type>\S+) submission (?P<name>\S+)"
         ),
         _start_testgroup: re.compile(
-            r"INFO : Running on test case group data/(sample|secret/group(?P<number>\d+))"
+            r"Running on testcase group data\.(sample|secret\.group(?P<number>\d+))"
         ),
         _ac_tc_result: re.compile(
             r"""[T|t]est\ file\ result.*AC.*CPU:\s
         (?P<time>\d+.\d+)
-        .* test\ case\ (sample|secret/group\d)/
+        .* testcase\ (sample|secret/group\d)/
         (?P<case>[^\]]+)
         """,
             re.VERBOSE,
@@ -404,6 +416,8 @@ class Problem:
 
             if sub.has_expected_grades():
                 summary = []
+                assert len(sub._expected_grades) == 0 or len(self.groups) == len(sub._expected_grades), \
+                    f"Mismatch between number of groups and number of @EXPECTED_GRADES for submission {sub}"
                 for i in self.groups:
                     if sub.expected_grade(i) == sub.verdict[i].grade:
                         summary.append("\033[32my\033[0m")
@@ -460,6 +474,9 @@ def main():
     """Parse (typically invoking verifyproblem as a subprocess), analyze, print."""
     args = parse_args()
 
+    global STATUS_ENABLED
+    STATUS_ENABLED = not args.no_status
+
     logging.basicConfig(
         format="\033[91m%(levelname)s:\033[0m %(message)s",
         level={
@@ -477,13 +494,13 @@ def main():
             sys.exit(1)
     if not args.logfile:
         verifyproblem = subprocess.Popen(
-            ["verifyproblem", args.problemdir, "-l", "info", "-p", "submissions"],
+            ["verifyproblem", args.problemdir, "-l", "debug", "-p", "submissions"],
             stdout=subprocess.PIPE,
             encoding="utf-8",
             universal_newlines=True,
             bufsize=1,
         )
-        print("Running", " ".join(verifyproblem.args), "...", end="\r")
+        print_status_line(f"Running {' '.join(verifyproblem.args)}...")
         inputstream = verifyproblem.stdout
     else:
         inputstream = args.logfile
