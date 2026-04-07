@@ -17,22 +17,23 @@ random.seed(int(cmdlinearg('seed', sys.argv[-1])))
 n = int(cmdlinearg('n'))
 m = int(cmdlinearg('m'))
 mode = cmdlinearg('mode')
+max_coord = int(cmdlinearg('max_coord', 10**4))
 
 drops = []
 
-MAX_COORD = 10**4
 
 if mode == "random":
-    drops = random.sample(range(-MAX_COORD, MAX_COORD+1), n)
+    drops = random.sample(range(-max_coord, max_coord+1), n)
 elif mode == "positive":
-    drops = random.sample(range(1, MAX_COORD+1), n)
+    drops = random.sample(range(1, max_coord+1), n)
 elif mode == "negative":
-    drops = random.sample(range(-MAX_COORD, 0), n)
+    drops = random.sample(range(-max_coord, 0), n)
 else:
     assert 0
 
 if int(cmdlinearg('zero', 0)):
-    drops[0] = 0
+    if 0 not in drops:
+        drops[0] = 0
 
 random.shuffle(drops)
 
