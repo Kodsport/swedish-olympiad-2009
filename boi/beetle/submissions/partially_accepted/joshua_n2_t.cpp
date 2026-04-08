@@ -42,6 +42,7 @@ ll test(vector<vector<vvi>>& dp, vi& water, ll leftMost, ll rightMost, bool left
         ret = max(ret,test(dp, water, min(leftMost, index + 1), max(rightMost, index + 1), false, arrivalT, m, score + max(0LL, m - arrivalT)));
     }
 
+    v = ret-score;
     return ret;
 }
 

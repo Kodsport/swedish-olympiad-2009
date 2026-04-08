@@ -19,7 +19,7 @@ mode = cmdlinearg('mode')
 
 MAX_COORD = 10000
 
-if mode == 'kill_bjs':
+if mode == 'kill_js':
     # Hill-climbed positions optimized to maximize beetle_js.cc recursion calls.
     # Dense cluster near origin on right (positions 2-90 with some gaps) +
     # scattered far drops on left + a few far drops on right.
