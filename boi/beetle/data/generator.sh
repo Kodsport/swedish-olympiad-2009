@@ -17,7 +17,6 @@ compile gen_kill_g3.py
 samplegroup
 sample 1
 
-
 group group1 5
 limits nonnegative=1
 tc g1-1 gen_rand n=300 m=1000000 mode=positive
@@ -47,7 +46,6 @@ tc g3-kill-2n-pruning-3 gen_kill_2n_pruning n=100 m=1000 base=1.07
 tc g3-kill-js-cheese-1 gen_kill_g3 n=100 m=1000
 tc g3-kill-js-cheese-2 gen_kill_g3 n=100 m=1000
 tc g3-kill-js-cheese-3 gen_kill_g3 n=100 m=1000
-
 
 group group4 30
 limits maxn=100
