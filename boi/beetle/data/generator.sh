@@ -66,6 +66,10 @@ tc g4-kill-2n-3 gen_kill_2n n=100 m=1000000
 tc g4-kill-js-1 gen_kill_js_gemini2 n=100 m=1000000 mode=kill_js seed=1
 tc g4-kill-js-2 gen_kill_js_gemini2 n=100 m=1000000 mode=kill_js seed=2
 tc g4-kill-js-3 gen_kill_js_gemini2 n=100 m=1000000 mode=kill_js seed=3
+tc g4-kill-gemini-pareto-front-1 gen_kill_gemini_pareto_front n=100 m=1000000 base=1.0419
+tc g4-kill-gemini-pareto-front-hard-1 gen_kill_pareto_hard n=100 m=19500
+tc g4-kill-gemini-pareto-front-hard-2 gen_kill_pareto_hard n=100 m=19000
+
 
 group group5 20
 include_group group1 group4

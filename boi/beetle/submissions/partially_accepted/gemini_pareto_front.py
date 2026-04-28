@@ -104,6 +104,19 @@ def solve():
                             
             dp[l][r] = (pareto0, pareto1)
 
+    # tot_size = 0
+    # for l in range(N):
+    #     for r in range(l, N):
+    #         tot_size += len(dp[l][r][0]) + len(dp[l][r][1])
+    # print("Total size of all pareto fronts:", tot_size)
+    # bins = N
+    # bin_values = [0] * bins
+    # for l in range(N):
+    #     for r in range(l, N):
+    #         toadd = len(dp[l][r][0]) + len(dp[l][r][1])
+    #         bin_values[l] += toadd
+    # print("Bin distribution of pareto front sizes:", bin_values)
+
     print(max_ans)
 
 if __name__ == '__main__':
