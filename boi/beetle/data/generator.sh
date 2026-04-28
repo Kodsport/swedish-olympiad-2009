@@ -11,6 +11,8 @@ compile gen_rand.py
 compile gen_kill_cheese.py
 compile gen_kill_2n.py
 compile gen_kill_js_gemini2.py
+compile gen_kill_gemini_pareto_front.py
+compile gen_kill_pareto_hard.py
 compile gen_kill_2n_pruning.py
 compile gen_kill_g3.py
 
@@ -74,4 +76,7 @@ tc g5-kill-cheese-3 gen_kill_cheese n=300 m=1000000 near=75 far_start=500 far_st
 tc g5-kill-gemini2-1 gen_kill_js_gemini2 n=300 m=1000000 mode=kill_gemini2 base=1.04 seed=1
 tc g5-kill-gemini2-2 gen_kill_js_gemini2 n=300 m=1000000 mode=kill_gemini2 base=1.04 seed=2
 tc g5-kill-gemini2-3 gen_kill_js_gemini2 n=300 m=1000000 mode=kill_gemini2 base=1.04 seed=3
+tc g5-kill-gemini-pareto-front-1 gen_kill_gemini_pareto_front n=300 m=1000000 base=1.0419
+tc g5-kill-gemini-pareto-front-hard-1 gen_kill_pareto_hard n=300 m=19500
+tc g5-kill-gemini-pareto-front-hard-2 gen_kill_pareto_hard n=300 m=19000
 
