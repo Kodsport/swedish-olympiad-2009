@@ -48,12 +48,15 @@ NOCOL='\033[0m'
 TOTAL_SCORE=0
 HAS_ERROR=0
 TC_INDEX=1
+PREV_GROUP_NAME=
+
 
 declare -A programs
 declare -A cases
 declare -A latestdir
 declare -A nicenames
 declare -A groups
+declare -A sample_symlink_name
 declare -a cleanup
 
 _get_ext () {
@@ -66,7 +69,7 @@ _base () {
 }
 
 _error () {
-  echo -e "${RED}ERROR: $1${NOCOL}"
+  echo -e "${RED}ERROR: $1${NOCOL}" >&2
   HAS_ERROR=1
 }
 
@@ -98,9 +101,9 @@ add_program cat "bash -c cat<\$0"
 compile_cpp () {
   echo Compiling $1...
   if [[ $2 == *"opt"* || "$(uname -s)" != Linux* ]]; then
-    g++ -O2 -Wall -std=gnu++14 -DGENERATING_TEST_DATA -o $(_base $1) $1
+    g++ -O2 -Wall -std=gnu++20 -DGENERATING_TEST_DATA -o $(_base $1) $1
   else
-    g++ -O2 -fsanitize=undefined -fsanitize=address -Wall -std=gnu++14 -DGENERATING_TEST_DATA -o $(_base $1) $1
+    g++ -O2 -fsanitize=undefined,address -g1 -Wall -std=gnu++20 -DGENERATING_TEST_DATA -o $(_base $1) $1
   fi
   add_program $(_base $1) "./$(_base $1)"
   add_cleanup $(_base $1)
@@ -110,7 +113,10 @@ compile_cpp () {
 # Arguments: file
 compile_java () {
   javac $1
-  cp $(dirname $1)/*.class .
+  if ! [ $(pwd) -ef $(dirname $1) ] # unless $(dirname $1) is the same dir as $(pwd)
+  then
+    cp $(dirname $1)/*.class .
+  fi
   add_program $(_base $1) "java $(_base $1)"
   add_cleanup $(_base $1)
 }
@@ -118,12 +124,14 @@ compile_java () {
 # Compile a Python program to run.
 # Arguments: file opts
 compile_py () {
-  if [[ $2 == *"pypy"* ]]; then
-    add_program $(_base $1) "pypy $1"
-  elif [[ $2 == *"python2"* ]]; then
-    add_program $(_base $1) "python2 $1"
-  else
+  if [[ $2 == *"cpython3"* ]]; then
     add_program $(_base $1) "python3 $1"
+  elif [[ $2 == *"cpython2"* ]]; then
+    add_program $(_base $1) "python2 $1"
+  elif [[ $2 == *"pypy2"* ]]; then
+    add_program $(_base $1) "pypy $1"
+  else
+    add_program $(_base $1) "pypy3 $1"
   fi
 }
 
@@ -169,11 +177,12 @@ grader_flags: ignore_sample" > testdata.yaml
 # Arguments: testcase path
 solve () {
   local execmd=${programs[$SOLUTION]}
-  $($execmd < $1.in > $1.ans)
+  $execmd < $1.in > $1.ans
 }
 
 CURGROUP_NAME=.
 CURGROUP_DIR=secret
+CURTEST=
 
 # Use a certain solution as the reference solution
 # Arguments: solution name
@@ -202,8 +211,11 @@ sample () {
     return 0
   fi
   echo "Solving case sample/$name..."
-  solve "sample/$name"
+  solve "$path"
+  CURTEST="$path"
   cases[$name]="$path"
+  sample_symlink_name[$name]="$(printf '%03d' $TC_INDEX)-$name"
+  let TC_INDEX++
   latestdir[$name]=sample
   nicenames[$name]="sample/$name"
   groups[sample]="${groups[sample]} $name"
@@ -225,7 +237,10 @@ sample_manual () {
     fi
   done
   echo "Using manual solution for $path"
+  CURTEST="$path"
   cases[$name]="$path"
+  sample_symlink_name[$name]="$(printf '%03d' $TC_INDEX)-$name"
+  let TC_INDEX++
   latestdir[$name]=sample
   nicenames[$name]="sample/$name"
   groups[sample]="${groups[sample]} $name"
@@ -236,6 +251,10 @@ group () {
   _assert_scoring group
   CURGROUP_NAME="$1"
   CURGROUP_DIR="secret/$1"
+  if [[ -n "$PREV_GROUP_NAME" && $(printf '%s\n%s\n' "$1" "$PREV_GROUP_NAME" | LC_ALL=C sort | head -1) != "$PREV_GROUP_NAME" ]]; then
+    _error "group name \"$1\" does not come after \"$PREV_GROUP_NAME\" in lexicographic order and will appear out of order in Kattis. Either prefix with group index or rename."
+  fi
+  PREV_GROUP_NAME="$1"
   echo 
   echo -e "Group $CURGROUP_NAME"
   mkdir "$CURGROUP_DIR"
@@ -303,11 +322,24 @@ _do_tc () {
   solve "$path"
 }
 
+hint () {
+    if [[ $# == 1 ]]; then
+        local hinttext=$1
+        echo "$hinttext" > "$CURTEST.hint"
+    fi
+}
+
+desc () {
+    if [[ $# == 1 ]]; then
+        local desctext=$1
+        echo "$desctext" > "$CURTEST.desc"
+    fi
+}
+
 _handle_err() {
   _error "crashed while generating case $1"
-  # Kill the parent. This might fail if the other subprocesses do so at the
-  # same time, but the PID is unlikely to be reused in this window, so...
-  # Just silence the error.
+  # Stop the entire bash process. It will still run _cleanup_programs and wait
+  # for all parallel tasks for now.
   kill $$ 2>/dev/null
   exit 1
 }
@@ -332,15 +364,26 @@ tc () {
       if [[ ${latestdir[$name]} == "$CURGROUP_DIR" ]]; then
         echo "Skipping duplicate case ${nicenames[$name]}"
       else
-        LN="ln -s ../../" # ln -sr isn't supported on Mac
+        if [[ $USE_SCORING = 0 ]]; then
+            LN="ln -s ../" # one lower level of nesting for non-scoring
+        else
+            LN="ln -s ../../" # ln -sr isn't supported on Mac
+        fi
         if [[ $USE_SYMLINKS = 0 ]]; then
           wait
           PARALLELISM_ACTIVE=1
           LN="cp "
         fi
-        local path="$CURGROUP_DIR/$(_base ${cases[$name]})"
+        # To ensure correct order, the symlink names of samples are e.g. 001-sample01.in instead of just sample01.in
+        local basepath="${sample_symlink_name[$name]:-$(_base ${cases[$name]})}"
+        local path="$CURGROUP_DIR/$basepath"
         ${LN}${cases[$name]}.in "$path.in"
         ${LN}${cases[$name]}.ans "$path.ans"
+        for ext in {hint,desc}; do
+            if [ -f ${cases[$name]}.$ext ]; then
+                ${LN}${cases[$name]}.$ext "$path.$ext"
+            fi
+        done
         latestdir[$name]="$CURGROUP_DIR"
         groups[$CURGROUP_NAME]="${groups[$CURGROUP_NAME]} $name"
         echo "Reusing ${nicenames[$name]}"
@@ -360,6 +403,7 @@ tc () {
   # Add an index to the test case name, to enforce evaluation order.
   local path="$CURGROUP_DIR/$(printf '%03d' $TC_INDEX)-$name"
   let TC_INDEX++
+  CURTEST="$path"
   cases[$name]="$path"
   latestdir[$name]="$CURGROUP_DIR"
   local nicename="$CURGROUP_NAME/$name"
@@ -367,6 +411,10 @@ tc () {
   groups[$CURGROUP_NAME]="${groups[$CURGROUP_NAME]} $name"
 
   local program="${programs[$2]}"
+  if [ ! "$program" ]; then
+    _error "missing compile command for generator \"$2\""
+    return 0
+  fi
 
   if [[ $USE_PARALLEL != 1 ]]; then
     _do_tc "$nicename" "$name" "$path" "$program" "${@:3}"
@@ -390,18 +438,47 @@ tc_manual () {
   tc $(_base "$1") cat "$1"
 }
 
+# Arguments: ../manual-tests/test_group/
+tg_manual() {
+  local dir="$1"
+
+  if [[ ! -d "$dir" ]]; then
+    _error "Directory \"$dir\" does not exist."
+    return 0
+  fi
+
+  local invalid
+  invalid=$(find "$dir" -mindepth 1 -maxdepth 1 -type f ! -name "*.in" -print -quit)
+  if [[ -n "$invalid" ]]; then
+    _error "File \"$invalid\" in \"$dir\" is not a \".in\" file."
+    return 0
+  fi
+
+  local infiles=("$dir"/*.in)
+  if [[ ! -e "${infiles[0]}" ]]; then
+    _error "No .in files found in \"$dir\"."
+    return 0
+  fi
+
+  for infile in "${infiles[@]}"; do
+    tc_manual "$infile"
+  done
+}
+
 # Include all testcases in another group
 # Arguments: group name to include
 include_group () {
   _assert_scoring include_group
-  local any=0
-  for x in ${groups[$1]}; do
-    tc "$x"
-    any=1
+  for g in "$@"; do
+    local any=0
+    for x in ${groups[$g]}; do
+      tc "$x"
+      any=1
+    done
+    if [[ $any = 0 ]]; then
+      _error "included group \"$g\" does not exist"
+    fi
   done
-  if [[ $any = 0 ]]; then
-    _error "included group \"$1\" does not exist"
-  fi
 }
 
 # Initialization and cleanup code, automatically included.

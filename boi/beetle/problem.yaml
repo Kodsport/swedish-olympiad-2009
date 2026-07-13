@@ -1,6 +1,11 @@
 uuid: 66dfb4c8-3596-4bba-b68b-0c38f5b9d4a8
 type: scoring
-source: Baltic Olympiad in Informatics 2009
+source: Baltic Olympiad in Informatics 2009, Day 1
 license: cc by-sa
 rights_owner: Baltic Olympiad in Informatics
 
+grading:
+  show_test_data_groups: true
+
+limits:
+  time_multiplier: 2
