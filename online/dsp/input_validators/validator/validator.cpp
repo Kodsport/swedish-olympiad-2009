@@ -1,8 +1,8 @@
 #include "validator.h"
 
-const int MAX_N = 256;
+const int MAX_N = 255;
 const int MAX_VAL = 255;
-const int MAX_STEPS = 1e6;
+const int MAX_STEPS = 1e5;
 
 const vector<string> NAMES = {"CONST", "ADD", "SUB", "JNZ", "INPUT", "OUTPUT", "HALT"};
 const vector<int> ARITY     = {2,       2,     2,     2,     1,       1,        0};
@@ -40,7 +40,7 @@ void run() {
 	int pc = 0, steps = 0;
 	size_t inptr = 0;
 	while (op[pc] != HALT) {
-		if (++steps > MAX_STEPS) die("program executes more than 10^6 instructions");
+		if (++steps > MAX_STEPS) die("program executes more than 10^5 instructions");
 		int x = parX[pc], y = parY[pc];
 		switch (op[pc]) {
 			case CONST:

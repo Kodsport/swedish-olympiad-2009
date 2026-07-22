@@ -4,7 +4,7 @@ Anna-Maria is planning to build a wind turbine, and has invented a new type of p
 
 Anna-Maria has sent an order to a factory that will produce the DSP for her, but due to the economic crisis, production is taking longer than expected. Anna-Maria, who has already written lots of programs for her DSP, is getting a bit impatient and wants to make sure her programs will work right away when the DSPs are ready. She therefore asks you to write a program that simulates the DSP's behavior, so she can test her programs before the DSP is available.
 
-The software that defines the DSP's behavior consists of a sequence of $N$ (up to 256) machine instructions (also called assembly instructions), numbered from $0$ to $N-1$. There are 7 types of instructions: \texttt{CONST}, \texttt{ADD}, \texttt{SUB}, \texttt{JNZ}, \texttt{INPUT}, \texttt{OUTPUT}, and \texttt{HALT}. Each instruction has 0--2 parameters, each of which is an integer $0..255$. The DSP also has a working memory consisting of 256 registers, each containing a byte (i.e., an integer $0..255$).
+The software that defines the DSP's behavior consists of a sequence of $N$ (up to 255) machine instructions (also called assembly instructions), numbered from $0$ to $N-1$. There are 7 types of instructions: \texttt{CONST}, \texttt{ADD}, \texttt{SUB}, \texttt{JNZ}, \texttt{INPUT}, \texttt{OUTPUT}, and \texttt{HALT}. Each instruction has 0--2 parameters, each of which is an integer $0..255$. The DSP also has a working memory consisting of 256 registers, each containing a byte (i.e., an integer $0..255$).
 
 A program is executed by the DSP starting with instruction 0, then instruction 1, and so on, until a \texttt{HALT} instruction is executed, at which point the program terminates. When execution begins, all registers have the value 0.
 
@@ -23,7 +23,7 @@ The machine instructions are defined as follows:
 \section*{Input}
 The input consists of the program to be run on the DSP, followed by the input data the DSP will be fed.
 
-The first line contains an integer $N$, ($1 \leq N \leq 256$), the number of machine instructions in the program.
+The first line contains an integer $N$, ($1 \leq N \leq 255$), the number of machine instructions in the program.
 
 Then follow $N$ lines with instructions. Each instruction consists of the instruction name, followed by the instruction's parameters. Each parameter is described by an integer in the range $0..255$.
 
@@ -34,7 +34,7 @@ You may assume that the DSP program and its input satisfy the following:
 \begin{itemize}
 \item No \texttt{ADD} instruction will produce a sum greater than 255, and no \texttt{SUB} instruction will produce a result less than 0.
 \item The program will always terminate correctly by reaching a \texttt{HALT} instruction. That is, the program will not get stuck in an infinite loop.
-\item The number of instructions that need to be executed will not exceed one million.
+\item The number of instructions that need to be executed will not exceed one hundred thousand.
 \item There will always be enough input data for all \texttt{INPUT} instructions that need to be executed.
 \item The program will never attempt to execute instructions other than numbers $0..N-1$. That is, \texttt{JNZ} will never jump to an instruction $\ge N$, and instruction number $N-1$ will always be either a \texttt{HALT} instruction or a \texttt{JNZ} instruction that jumps to an earlier instruction.
 \end{itemize}
