@@ -1,0 +1,24 @@
+\problemname{Letter Game}
+Two people, let us call them Anna and Bosse, take turns saying a letter (Anna says the first letter, Bosse the second, Anna the third, and so on). The same letter may be used multiple times. There are two rules:
+
+\begin{itemize}
+	\item The letters said so far (in order) must not form a completed word.
+	\item The letters said so far (in order) must be able to form a word if more letters are appended at the end.
+\end{itemize}
+
+The one who breaks either rule loses, and the other one thus wins (in the real game, one can bluff on the second rule).
+
+For example, if the letters \texttt{S}, \texttt{T}, and \texttt{U} have been said, then Bosse loses if he says \texttt{P} since \texttt{STUP} is a word. Furthermore, he loses if he says, e.g., \texttt{J} since no word starts with \texttt{STUJ}. However, the game continues if he says \texttt{G}; Anna then cannot say \texttt{A} since \texttt{STUGA} is a word, but she can say \texttt{B}, thereby forcing Bosse to complete the word \texttt{STUGBY}.
+
+For simplicity, we assume here that only the letters \texttt{A-Z} may be used. Furthermore, there is a dictionary containing all letter combinations that are to be considered words in this particular game. Write a program that determines which letters are ``safe'' to start with for Anna, i.e., the letters that allow her to win the round regardless of which letters Bosse chooses.
+
+\section*{Input}
+The first line contains an integer $N$ ($1 \leq N \leq 40\,000$), the number of words in the dictionary.
+
+Then follow $N$ lines with one word on each line.
+The words are in alphabetical order and are all distinct.
+Each word consists of at least $1$ and at most $20$ letters, chosen from the uppercase letters \texttt{A-Z}.
+Made-up words may also appear.
+
+\section*{Output}
+The program should output an alphabetically sorted list of the letters that have the property that, if Anna starts with the letter, she will be able to win regardless of which letters Bosse chooses (both may of course adapt their choices based on what the other says). The letters should be separated by spaces and appear on a single line.

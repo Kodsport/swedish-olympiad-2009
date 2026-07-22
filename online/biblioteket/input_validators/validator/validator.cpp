@@ -1,13 +1,17 @@
 #include "validator.h"
 
+const int MAX_N = 100;
+const int MAX_K = 100;
+const int MAX_COORD = 1000;
+
 void run() {
-    int maxk = Arg("maxk", 100);
-	int n = Int(1, 100);
+	int n = Int(1, MAX_N);
 	Space();
-	int k = Int(1, maxk);
+	int k = Int(1, Arg("maxk", MAX_K));
 	Endl();
 
 	for (int i = 0; i < n; i++) {
-        Int(-1000, 1000); Endl();
+        Int(-MAX_COORD, MAX_COORD);
+		Endl();
 	}
 }

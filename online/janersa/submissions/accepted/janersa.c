@@ -2,7 +2,8 @@
 #define INF 1000000
 
 int main() {
-  int n,m,i,j,k,s1,s2,d[100][100];
+  int n,m,i,j,k,s1,s2;
+  static int d[700][700];
   scanf("%d %d", &n,&m);
   for(i=0;i<n;i++) for(j=0;j<n;j++) d[i][j]=(i==j)?0:INF;
   for(i=0;i<m;i++) {
@@ -19,6 +20,6 @@ int main() {
 	m=d[i][j];
        //printf("%d %d %d\n", s1,s2,m);
       }
-  printf("%d\n",m*100);
+  printf("%d %d %d\n",s1,s2,m*100);
   return 0;
 }

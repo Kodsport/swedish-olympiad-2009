@@ -1,0 +1,32 @@
+\problemname{The Library}
+You work at a library and want to put a number of books back on the shelves.
+The shelves are placed along the $x$-axis.
+Given the shelf where each book belongs (an $x$-coordinate between $-1000$ and $1000$) and the maximum number of books you can carry at the same time, determine the shortest distance you must walk to put back all the books.
+You and the books to be put back are initially at position $0$.
+You do not need to walk back after putting back the last book.
+
+\section*{Input}
+The first line contains the integers $N$ and $K$ ($1 \leq N, K \leq 100$),
+the number of books to be put back and the number of books you can carry at the same time.
+
+The following $N$ lines each contain an integer $x_i$ ($-1000 \leq x_i \leq 1000$),
+the $x$-coordinate of the shelf where each book belongs.
+
+\section*{Output}
+Print an integer: the minimum distance you must walk to put back all the books.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$    & $30$        & $K = 1$ \\ \hline
+  $2$    & $70$        & No additional constraints. \\ \hline
+\end{tabular}
+
+\section*{Explanation of Sample}
+For example, you can start by bringing the books that belong on shelves $3$ and $4$.
+Then you fetch the book that belongs on shelf $1$, and finally you take the book that belongs on shelf $-4$.

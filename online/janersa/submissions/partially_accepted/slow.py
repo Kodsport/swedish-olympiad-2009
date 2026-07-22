@@ -61,16 +61,20 @@ def main():
         edges[houseA].add((length, houseB))
         edges[houseB].add((length, houseA))
 
+    a=b=-1
     longest = -1
     for i in range(1, n + 1):
         for j in range(1, n + 1):
             if i == j:
                 continue
             dist = shortest(edges, i, j, n)
-            longest = max(longest, dist)
+            if dist > longest:
+                longest=dist
+                a=i
+                b=j
 
 
-    write(f"{longest * 100}")
+    print(a,b,longest*100)
 
 if __name__ == "__main__":
     main()

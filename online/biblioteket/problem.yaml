@@ -1,6 +1,7 @@
 uuid: e4f43554-c838-4cb9-989f-115c9ce69ca6
 type: scoring
 source: Programmeringsolympiadens onlinekval 2009
+rights_owner: Programmeringsolympiaden
 license: cc by-sa
 grading: 
   show_test_data_groups: true
