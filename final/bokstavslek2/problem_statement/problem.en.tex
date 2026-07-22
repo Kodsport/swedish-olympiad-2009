@@ -13,7 +13,12 @@ For example, if the letters \texttt{S}, \texttt{T}, and \texttt{U} have been sai
 For simplicity, we assume here that only the letters \texttt{A-Z} may be used. Furthermore, there is a dictionary containing all letter combinations that are to be considered words in this particular game. Write a program that determines which letters are ``safe'' to start with for Anna, i.e., the letters that allow her to win the round regardless of which letters Bosse chooses.
 
 \section*{Input}
-The first line contains an integer $N$ ($1 \leq N \leq 40000$), the number of words in the dictionary. Then follow $N$ lines with one word on each line. The words are in alphabetical order. Each word consists of at most $20$ letters, chosen from the uppercase letters \texttt{A-Z}. Made-up words may also appear.
+The first line contains an integer $N$ ($1 \leq N \leq 40\,000$), the number of words in the dictionary.
+
+Then follow $N$ lines with one word on each line.
+The words are in alphabetical order and are all distinct.
+Each word consists of at most $20$ letters, chosen from the uppercase letters \texttt{A-Z}.
+Made-up words may also appear.
 
 \section*{Output}
 The program should output an alphabetically sorted list of the letters that have the property that, if Anna starts with the letter, she will be able to win regardless of which letters Bosse chooses (both may of course adapt their choices based on what the other says). The letters should be separated by spaces and appear on a single line.

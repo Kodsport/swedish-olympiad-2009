@@ -1,3 +1,4 @@
+// does not consider 1-letter words
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -22,7 +23,7 @@ struct node
 
 void addword(string& word, int index, node* n)
 {
-    if (index == sz(word)-1)
+    if (index == word.size()-1)
     {
         n->next[word[index]] = new node{ word[index],{}, {} };
         n->next[word[index]]->finished.insert(word);
@@ -92,22 +93,22 @@ int main() {
         string word;
         cin >> word;
         transform(all(word), begin(word), ::toupper);
-        if (word.size() == 1) parent->next[word[0]]->finished.insert(word);
-        else addword(word, 1, parent->next[word[0]]);
+        if (word.size()==1)
+        {
+            continue;
+        }
+        addword(word, 1, parent->next[word[0]]);
+
     }
 
-    vector<char> ans;
     repe(c, upperCase)
     {
         if (winning(parent->next[c], string(1,c), false) == 1)
         {
-            ans.push_back(c);
+            cout << c << " ";
         }
     }
-    rep(i,sz(ans)) {
-        if (i) cout << ' ';
-        cout << ans[i];
-    }
-    cout << endl;
-    _Exit(0); // address sanitizer sidestep
+    cout << '\n';
+
+    return 0;
 }
