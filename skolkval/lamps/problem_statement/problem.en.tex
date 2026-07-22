@@ -1,17 +1,18 @@
 \problemname{Lamps}
-The use of incandescent light bulbs is soon being banned within the European Union, but it can already be profitable to use low energy lamps.
+The use of incandescent light bulbs will soon be banned within the European Union, but it can already be profitable to use low energy lamps.
 Your task is to write a program that, given for how long a light is on each day and the price of electricity, computes after how many days the total cost of ownership (the purchasing price of the lamp plus the cost of electricity) is lower for the low energy lamp compared to the incandescent light bulb for the first time.
 
 We assume the following data:
 
-\noindent
+\begin{center}
 \begin{tabular}{|l|l|l|}
 \hline
 & Incandescent bulb & Low energy lamp \\ \hline
-Power (watt)           & 60                & 11             \\ \hline
-Life (hours)           & 1000              & 8000           \\ \hline
-Price (Swedish kronor) & 5                 & 60             \\ \hline
+Power (watt)           & $60$                & $11$             \\ \hline
+Life (hours)           & $1000$              & $8000$           \\ \hline
+Price (Swedish kronor) & $5$                 & $60$             \\ \hline
 \end{tabular}
+\end{center}
 
 For simplicity, we assume that each lamp has the exact given life.
 This means that if you only need to have a light on for $1000$ hours you only need a single incandescent bulb, while you need two if you use it for $1001$ hours, since the first breaks after $1000$ hours.
@@ -20,7 +21,7 @@ The cost of electricity $K$ for a lamp that is on for $H$ hours can be computed 
 $$ K = \frac{E \cdot H \cdot P}{100\,000} $$
 where $E$ is the power of the lamp in watt and $P$ is the price of electricity (in hundredths of a krona per kilowatt-hour).
 
-In every test case, it is guaranteed that the low energy lamp becomes cheaper within $8\,000$ hours, i.e. you will never have to buy an additional low energy lamp.
+In every test case, it is guaranteed that the low energy lamp becomes cheaper within $8000$ hours, i.e. you will never have to buy an additional low energy lamp.
 
 \section*{Input}
 The first and only line of input contains two integers $h$ ($1 \le h \le 24$) and $P$ ($1 \le P \le 200$), the number of hours per day the lamp is on, and the price of electricity.
