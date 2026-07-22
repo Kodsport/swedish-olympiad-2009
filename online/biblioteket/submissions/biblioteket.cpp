@@ -1,3 +1,4 @@
+// Has UB: works on my machine, but i wouldnt trust it
 #include <stdio.h>
 #include <algorithm>
 using namespace std;

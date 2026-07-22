@@ -59,6 +59,7 @@ namespace IO {
 	vector<double> SpacedFloats(long long count, double lo, double hi, int decimals);
 	void Char(char expected);
 	char Char();
+	string Word();
 	string Line();
 	void Endl() { Char('\n'); }
 	void Space() { Char(' '); }
@@ -236,18 +237,6 @@ char _read1() {
 	_use_peek(ret);
 	return ret;
 }
-string _token() {
-	string ret;
-	for (;;) {
-		char ch = _peek1();
-		if (ch == ' ' || ch == '\n' || ch == '\r' || ch == -1) {
-			break;
-		}
-		_use_peek(ch);
-		ret += ch;
-	}
-	return ret;
-}
 string _describe(char ch) {
 	assert(ch != -2);
 	if (ch == -1) return "EOF";
@@ -259,8 +248,21 @@ string _describe(char ch) {
 	return string("'") + ch + "'";
 }
 
+string IO::Word() {
+	string ret;
+	for (;;) {
+		char ch = _peek1();
+		if (ch == ' ' || ch == '\n' || ch == '\r' || ch == -1) {
+			break;
+		}
+		_use_peek(ch);
+		ret += ch;
+	}
+	return ret;
+}
+
 IntType IO::Int(long long lo, long long hi) {
-	string s = _token();
+	string s = IO::Word();
 	if (s.empty()) die_line("Expected number, saw " + _describe(_peek1()));
 	try {
 		long long mul = 1;
@@ -272,7 +274,7 @@ IntType IO::Int(long long lo, long long hi) {
 		if (ind == (int)s.size()) throw false;
 		char ch = s[ind++];
 		if (ch < '0' || ch > '9') throw false;
-		if (ch == '0' && ind != (int)s.size()) throw false;
+		if (ch == '0' && (ind != (int)s.size() || mul == -1)) throw false;
 		long long ret = ch - '0';
 		while (ind < (int)s.size()) {
 			if (ret > LLONG_MAX / 10 - 20 || ret < LLONG_MIN / 10 + 20)
@@ -314,7 +316,7 @@ vector<double> IO::SpacedFloats(long long count, double lo, double hi, int decim
 }
 
 double IO::Float(double lo, double hi, int decimals, bool strict) {
-	string s = _token();
+	string s = IO::Word();
 	if (s.empty()) die_line("Expected floating point number, saw " + _describe(_peek1()));
 	istringstream iss(s);
 	double res;
@@ -325,7 +327,7 @@ double IO::Float(double lo, double hi, int decimals, bool strict) {
 	if (res != res) die_line("Floating-point number " + s + " is NaN");
     size_t dot = s.find('.');
     if (dot != string::npos) {
-        int dec = s.size() - dot - 1;
+        int dec = (int)(s.size() - dot - 1);
         if (dec > decimals) {
             die_line("Number " + s + " has " + to_string(dec) + " decimals; " + to_string(decimals) + " is max");
         }

@@ -1,23 +1,23 @@
 \problemname{The Library}
-You work at a library and want to return a number of books to the shelves.
+You work at a library and want to put a number of books back on the shelves.
 The shelves are placed along the $x$-axis.
-Given which shelf each book belongs on (an $x$-coordinate between $-1\,000$ and $1\,000$) and the maximum number of books you can carry at the same time, determine the shortest distance you must walk to return all books.
-The books to be returned are initially at position $0$.
-You do not need to return to position $0$ after returning the last book.
+Given the shelf where each book belongs (an $x$-coordinate between $-1000$ and $1000$) and the maximum number of books you can carry at the same time, determine the shortest distance you must walk to put back all the books.
+You and the books to be put back are initially at position $0$.
+You do not need to walk back after putting back the last book.
 
 \section*{Input}
-The first line contains two integers: the number of books to return $N$, where $1 \le N \le 100$, and the number of books you can carry at once $K$, where $1 \le K \le 100$. Then follow $N$ lines with one integer on each line, the $x$-coordinate of the shelf where each book belongs.
+The first line contains the integers $N$ and $K$ ($1 \leq N, K \leq 100$),
+the number of books to be put back and the number of books you can carry at the same time.
+
+The following $N$ lines each contain an integer $x_i$ ($-1000 \leq x_i \leq 1000$),
+the $x$-coordinate of the shelf where each book belongs.
 
 \section*{Output}
-The program should output a single line with one integer: the minimum distance you must walk to return all books.
-
-\section*{Explanation of Sample 1}
-You can, for example, start by bringing the books that go to shelves 3 and 4. Then you pick up the book going to shelf 1, and finally you take the book going to shelf $-4$.
+Print an integer: the minimum distance you must walk to put back all the books.
 
 \section*{Scoring}
 Your solution will be tested on a set of test groups.
 To earn points for a group, you must pass all test cases in that group.
-
 
 \noindent
 \begin{tabular}{| l | l | p{12cm} |}
@@ -26,3 +26,7 @@ To earn points for a group, you must pass all test cases in that group.
   $1$    & $30$        & $K = 1$ \\ \hline
   $2$    & $70$        & No additional constraints. \\ \hline
 \end{tabular}
+
+\section*{Explanation of Sample}
+For example, you can start by bringing the books that belong on shelves $3$ and $4$.
+Then you fetch the book that belongs on shelf $1$, and finally you take the book that belongs on shelf $-4$.
