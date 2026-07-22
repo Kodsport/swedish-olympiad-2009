@@ -23,7 +23,12 @@ The machine instructions are defined as follows:
 \section*{Input}
 The input consists of the program to be run on the DSP, followed by the input data the DSP will be fed.
 
-The first line contains an integer $N$, $0<N<256$, the number of machine instructions in the program. Then follow $N$ lines with instructions. Each instruction consists of the instruction name, followed by the instruction's parameters. Each parameter is described by an integer in the range $0..255$. After the $N$ lines of machine instructions, a number of integers in the range $0..255$ follow, one per line. These constitute the input to the DSP, i.e., the series of numbers that the DSP program's \texttt{INPUT} instructions read from.
+The first line contains an integer $N$, ($1 \leq N \leq 256$), the number of machine instructions in the program.
+
+Then follow $N$ lines with instructions. Each instruction consists of the instruction name, followed by the instruction's parameters. Each parameter is described by an integer in the range $0..255$.
+
+After the $N$ lines of machine instructions, a number of integers in the range $0..255$ follow, one per line.
+These constitute the input to the DSP, i.e., the series of numbers that the DSP program's \texttt{INPUT} instructions read from.
 
 You may assume that the DSP program and its input satisfy the following:
 \begin{itemize}

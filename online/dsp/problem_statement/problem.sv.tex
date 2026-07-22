@@ -14,7 +14,7 @@ Maskininstruktionerna definieras på följande vis:
 \item[\texttt{CONST x y}] Sätt register nr y till värdet x. ([y] = x)
 \item[\texttt{ADD x y}] Addera värdet i register nr x till register nr y. ([y] = [y] + [x])
 \item[\texttt{SUB x y}] Subtrahera värdet i register nr x från värdet i register nr y. ([y] = [y] - [x])
-\item[\texttt{JNZ x y}] Jump if Not Zero: Om register nr x inte är 0, ``hoppa'' till instruktion nr y, dvs låt instruktion y bli nästa instruktion att exekvera. Om register nr x däremot är 0, fortsätt exekveringen som vanligt med instruktionen efter JNZ.
+\item[\texttt{JNZ x y}] Jump if Not Zero: Om register nr x inte är 0, ''hoppa'' till instruktion nr y, dvs låt instruktion y bli nästa instruktion att exekvera. Om register nr x däremot är 0, fortsätt exekveringen som vanligt med instruktionen efter JNZ.
 \item[\texttt{INPUT x}] Läs in nästa byte från DSP:ns indata, lagra den i register nr x.
 \item[\texttt{OUTPUT x}] Skicka innehållet i register nr x som utdata från DSP:n.
 \item[\texttt{HALT}] Avsluta körningen.
@@ -23,11 +23,16 @@ Maskininstruktionerna definieras på följande vis:
 \section*{Indata}
 Indata består av programmet som ska köras på DSP:n, följt av det indata som DSP:n kommer matas med.
 
-På första raden står ett heltal $N$, $0<N<256$, antalet maskininstruktioner i programmet. Därpå följer $N$ rader med instruktioner. Varje instruktion består av instruktionens namn, följt av instruktionens parametrar. Varje parameter beskrivs av ett heltal i intervallet $0..255$. Efter de $N$ raderna med maskininstruktioner, följer ett antal tal i intervallet $0..255$, ett tal på varje rad. Talen utgör indata till DSP:n, dvs den talserie som DSP-programmets \texttt{INPUT}-instruktioner läser från.
+På första raden står ett heltal $N$, ($1 \leq N \leq 256$), antalet maskininstruktioner i programmet.
+
+Därpå följer $N$ rader med instruktioner. Varje instruktion består av instruktionens namn, följt av instruktionens parametrar. Varje parameter beskrivs av ett heltal i intervallet $0..255$.
+
+Efter de $N$ raderna med maskininstruktioner, följer ett antal tal i intervallet $0..255$, ett tal på varje rad.
+Talen utgör indata till DSP:n, dvs den talserie som DSP-programmets \texttt{INPUT}-instruktioner läser från.
 
 Du kan förutsätta att DSP-programmet och dess indata uppfyller följande:
 \begin{itemize}
-\item Ingen \texttt{ADD}-instruktion kommer ge en summa större än 255, och ingen \texttt{SUB}-instruktion kommer ge ett tal mindre än 0 som resultat.
+\item Ingen \texttt{ADD}-instruktion kommer ge en summa större än 255, och ingen \texttt{SUB}-instruktion kommer ge ett tal mindre än $0$ som resultat.
 \item Programmet kommer alltid att avslutas korrekt genom att komma fram till en \texttt{HALT}-instruktion. Dvs, programmet kommer inte fastna i en evig loop.
 \item Antalet instruktioner som behöver exekveras kommer inte att överstiga en miljon.
 \item Det kommer alltid finnas tillräckligt med indata för att räcka till alla \texttt{INPUT}-instruktioner som behöver exekveras.
