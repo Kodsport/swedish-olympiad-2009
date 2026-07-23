@@ -19,7 +19,6 @@ tc g1-tiny gen_strong mode=random n=2 m=1
 tg_manual ../manual_data/g1
 
 group group2 70
-limits n=700 m=2000
 include_group group1
 tc g2-random-a gen_strong mode=random n=700 m=2000
 tc g2-random-b gen_strong mode=random n=700 m=2000
